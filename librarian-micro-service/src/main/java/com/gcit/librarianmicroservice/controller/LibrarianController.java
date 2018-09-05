@@ -7,6 +7,7 @@ import com.gcit.librarianmicroservice.model.BookCopies;
 import com.gcit.librarianmicroservice.model.LibraryBranch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class LibrarianController {
         return lDao.findById(branchId);
     }
 
+    @Transactional
     @RequestMapping(value = "/branches/{branchId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public LibraryBranch updateBranch(@PathVariable Long branchId,
@@ -55,6 +57,7 @@ public class LibrarianController {
         return cDao.findByChargers(bookId, branchId);
     }
 
+    @Transactional
     @RequestMapping(value = "/branches/{branchId}/copies/{bookId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public BookCopies updateBookCopies(@PathVariable Long branchId,

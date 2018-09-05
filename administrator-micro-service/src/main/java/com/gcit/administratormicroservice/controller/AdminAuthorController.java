@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @RestController
 @RequestMapping
 public class AdminAuthorController {
@@ -32,18 +31,21 @@ public class AdminAuthorController {
         return aDao.findByAuthorId(authorId);
     }
 
+    @Transactional
     @RequestMapping(value= "/author", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Author newAuthor(@Valid @RequestBody Author author) {
         return aDao.save(author);
     }
 
+    @Transactional
     @RequestMapping(value = "/authors/{authorId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAuthor(@PathVariable Long authorId) {
         aDao.deleteByAuthorId(authorId);
     }
 
+    @Transactional
     @RequestMapping(value = "/authors/{authorId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Author updateAuthor(@PathVariable Long authorId,

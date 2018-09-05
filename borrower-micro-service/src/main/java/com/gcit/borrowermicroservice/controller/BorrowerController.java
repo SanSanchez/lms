@@ -4,6 +4,7 @@ import com.gcit.borrowermicroservice.dao.*;
 import com.gcit.borrowermicroservice.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class BorrowerController {
         return bDao.findAll();
     }
 
-    @RequestMapping(value = "/loans/{cardNo}")
+    @RequestMapping(value = "/{cardNo}/loans")
     @ResponseStatus(HttpStatus.OK)
     public List<BookLoans> getLoans(@PathVariable Long cardNo) {
         Optional<Borrower> borrower = bDao.findById(cardNo);
@@ -46,14 +47,14 @@ public class BorrowerController {
         }
     }
 
-    @RequestMapping(value = "/loans/{cardNo}/branches/{branchId}")
+    @RequestMapping(value = "/{cardNo}/loans/branches/{branchId}")
     @ResponseStatus(HttpStatus.OK)
     public List<BookLoans> getLoansAtBranch(@PathVariable Long cardNo,
                                             @PathVariable Long branchId ) {
         return blDao.findAllByLIdBranchId(branchId);
     }
 
-    @RequestMapping("/loans/{cardNo}/branches/{branchId}/books")
+    @RequestMapping("/{cardNo}/loans/branches/{branchId}/books")
     @ResponseStatus(HttpStatus.OK)
     public List<Book> getAllBooksAtBranch(@PathVariable Long cardNo,
                                           @PathVariable Long branchId) {
@@ -65,8 +66,8 @@ public class BorrowerController {
         return books;
     }
 
-    // FIXME
-    @RequestMapping(value = "/loans/{cardNo}/branches/{branchId}/books",
+    @Transactional
+    @RequestMapping(value = "/{cardNo}/loans/branches/{branchId}/book",
             method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public BookLoans makeLoan(@PathVariable Long cardNo,
@@ -76,7 +77,7 @@ public class BorrowerController {
         BookCopies bc = cDao.findByChargers(book.getBookId(), branchId);
         BookLoansId blI = new BookLoansId(book.getBookId(), branchId, cardNo);
 
-        bc.setNoOfCopies(bc.getNoOfCopies() -1);
+        bc.setNoOfCopies(bc.getNoOfCopies() - 1);
         BookLoans bl = new BookLoans();
         bl.setLoanId(blI);
         bl.setBook(book);
@@ -89,7 +90,7 @@ public class BorrowerController {
         return blDao.save(bl);
     }
 
-    @RequestMapping(value = "/loans/{cardNo}/branches/{branchId}/books/{bookId}")
+    @RequestMapping(value = "/{cardNo}/loans//branches/{branchId}/books/{bookId}")
     @ResponseStatus(HttpStatus.OK)
     public BookLoans getLoan(@PathVariable Long cardNo,
                              @PathVariable Long branchId,
@@ -99,7 +100,8 @@ public class BorrowerController {
 
     // Delete Loan
     // Update Copies.
-    @RequestMapping(value = "/loans/{cardNo}/branches/{branchId}/books/{bookId}",
+    @Transactional
+    @RequestMapping(value = "/{cardNo}/loans/branches/{branchId}/books/{bookId}",
             method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLoan(@PathVariable Long cardNo,

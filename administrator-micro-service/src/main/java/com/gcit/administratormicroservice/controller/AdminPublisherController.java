@@ -5,6 +5,7 @@ import com.gcit.administratormicroservice.exceptions.ResourceNotFoundException;
 import com.gcit.administratormicroservice.model.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,18 +31,21 @@ public class AdminPublisherController {
         return pDao.findByPublisherId(publisherId);
     }
 
+    @Transactional
     @RequestMapping(value = "/publisher", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Publisher newPublisher(@Valid @RequestBody Publisher publisher) {
         return pDao.save(publisher);
     }
 
+    @Transactional
     @RequestMapping(value = "/publishers/{publisherId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePublisher(@PathVariable Long publisherId) {
         pDao.deleteByPublisherId(publisherId);
     }
 
+    @Transactional
     @RequestMapping(value = "/publishers/{publisherId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Publisher updatePublisher(@PathVariable Long publisherId,

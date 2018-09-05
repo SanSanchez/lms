@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@Transactional
 @RestController
 @RequestMapping
 public class AdminBookController {
@@ -32,18 +31,21 @@ public class AdminBookController {
         return bDao.findByBookId(bookId);
     }
 
+    @Transactional
     @RequestMapping(value = "/book", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Book newBook(@Valid @RequestBody Book book) {
         return bDao.save(book);
     }
 
+    @Transactional
     @RequestMapping(value = "/books/{bookId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@PathVariable Long bookId) {
         bDao.deleteByBookId(bookId);
     }
 
+    @Transactional
     @RequestMapping(value = "/books/{bookId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Book updateBook(@PathVariable Long bookId,

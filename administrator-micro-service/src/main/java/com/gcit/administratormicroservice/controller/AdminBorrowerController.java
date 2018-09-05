@@ -5,6 +5,7 @@ import com.gcit.administratormicroservice.exceptions.ResourceNotFoundException;
 import com.gcit.administratormicroservice.model.Borrower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +30,21 @@ public class AdminBorrowerController {
         return bDao.findByCardNo(borrowerId);
     }
 
+    @Transactional
     @RequestMapping(value = "/borrower", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public Borrower newBorrower(@RequestBody Borrower borrower) {
         return bDao.save(borrower);
     }
 
+    @Transactional
     @RequestMapping(value = "/borrowers/{borrowerId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBorrower(@PathVariable Long borrowerId) {
         bDao.deleteByCardNo(borrowerId);
     }
 
+    @Transactional
     @RequestMapping(value = "/borrowers/{borrowerId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Borrower updateBorrower(@PathVariable Long borrowerId,
