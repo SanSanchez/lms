@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping
 public class LibrarianController {
@@ -34,6 +35,10 @@ public class LibrarianController {
     public Optional<LibraryBranch> getBranch(@PathVariable Long branchId) {
         return lDao.findById(branchId);
     }
+
+    @RequestMapping("/branches/{branchId}/copies")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<BookCopies> getCopies(@PathVariable Long branchId) { return cDao.findAllByBranchId(branchId); }
 
     @Transactional
     @RequestMapping(value = "/branches/{branchId}", method = RequestMethod.PUT)

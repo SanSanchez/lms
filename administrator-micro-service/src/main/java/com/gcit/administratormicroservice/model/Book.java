@@ -18,12 +18,12 @@ public class Book {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "authId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "authId")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pubId", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "pubId")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Publisher publisher;
 
@@ -45,9 +45,7 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return this.author;
-    }
+    public Author getAuthor() { return this.author; }
 
     public void setAuthor(Author author) {
         this.author = author;

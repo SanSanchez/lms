@@ -44,6 +44,7 @@ public class AdminPublisherController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePublisher(@PathVariable Long publisherId) {
         pDao.deleteByPublisherId(publisherId);
+        System.out.println("this is the publisher id: " + publisherId);
     }
 
     @Transactional

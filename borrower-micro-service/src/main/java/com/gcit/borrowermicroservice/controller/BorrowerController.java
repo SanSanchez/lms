@@ -1,5 +1,6 @@
 package com.gcit.borrowermicroservice.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.gcit.borrowermicroservice.dao.*;
 import com.gcit.borrowermicroservice.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping
 public class BorrowerController {
@@ -74,19 +76,22 @@ public class BorrowerController {
                               @PathVariable Long branchId,
                               @RequestBody String bookTitle) {
         Book book = kDao.findByTitle(bookTitle);
-        BookCopies bc = cDao.findByChargers(book.getBookId(), branchId);
+        System.out.println(branchId);
+//        System.out.println(book.getTitle());
+//        System.out.println(book.getBookId());
+//        BookCopies bc = cDao.findByChargers(book.getBookId(), branchId);
         BookLoansId blI = new BookLoansId(book.getBookId(), branchId, cardNo);
 
-        bc.setNoOfCopies(bc.getNoOfCopies() - 1);
+//        bc.setNoOfCopies(bc.getNoOfCopies() - 1);
         BookLoans bl = new BookLoans();
-        bl.setLoanId(blI);
+//        bl.setLoanId(blI);
         bl.setBook(book);
         bl.setBorrower(bDao.getOne(cardNo));
         bl.setBranch(lDao.getOne(branchId));
-        bl.setDateOut("2018-03-10 06:49:53.0");
-        bl.setDueDate("2018-03-17 06:49:53.0");
+        bl.setDateOut("2018-09-14 06:49:53.0");
+        bl.setDueDate("2018-10-04 06:49:53.0");
 
-        cDao.save(bc);
+//        cDao.save(bc);
         return blDao.save(bl);
     }
 
